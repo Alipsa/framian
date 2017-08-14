@@ -384,8 +384,8 @@ private final class CellOrder[A: Order] extends Order[Cell[A]] {
 
 @SerialVersionUID(0L)
 private final class CellMonoid[A: Semigroup] extends Monoid[Cell[A]] {
-  def id: Cell[A] = NA
-  def op(x: Cell[A], y: Cell[A]): Cell[A] = (x, y) match {
+  def empty: Cell[A] = NA
+  def combine(x: Cell[A], y: Cell[A]): Cell[A] = (x, y) match {
     case (NM, _) => NM
     case (_, NM) => NM
     case (Value(a), Value(b)) => Value(a |+| b)

@@ -2,7 +2,7 @@ organization in ThisBuild := "net.tixxit"
 
 licenses in ThisBuild += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-scalaVersion in ThisBuild := "2.11.8"
+scalaVersion in ThisBuild := "2.12.2"
 
 scalacOptions in ThisBuild ++= Seq(
   "-deprecation",
@@ -48,5 +48,5 @@ lazy val framianBenchmarks = project.
 lazy val docs = project.
   in(file("docs")).
   dependsOn(framian).
-  settings(Publish.skip: _*).
-  settings(tutSettings: _*)
+  settings(Publish.skip: _*)
+  //settings(tutSettings: _*)

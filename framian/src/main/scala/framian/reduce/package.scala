@@ -33,7 +33,7 @@ package object reduce {
 
   def Mean[A: Field]: Reducer[A, A] = new Mean[A]
 
-  def Sum[A: AdditiveMonoid]: Reducer[A, A] = MonoidReducer(spire.algebra.Monoid.additive[A])
+  def Sum[A: AdditiveMonoid]: Reducer[A, A] = MonoidReducer(AdditiveMonoid.additive[A])
 
   def Median[A: Field: Order: ClassTag]: Reducer[A, A] = new Median
 

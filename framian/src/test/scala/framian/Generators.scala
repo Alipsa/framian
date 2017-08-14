@@ -71,7 +71,7 @@ trait SeriesGenerators {
    *         cell types ([[Value]], [[NA]], [[NM]])
    */
   implicit def arbSeries[K: Arbitrary: Order: ClassTag, V: Arbitrary: ClassTag]: Arbitrary[Series[K, V]] =
-    Arbitrary(SeriesGenerators.genSeries(arbitrary[K], arbitrary[V], (60, 30, 1)))
+    Arbitrary(SeriesGenerators.genSeries(arbitrary[K], arbitrary[V], (60, 30, 1)).suchThat(!_.isEmpty))
 
   /**
    * @return an arbitrary series generator that generates series that contain only [[NA]] cells
@@ -84,7 +84,7 @@ trait SeriesGenerators {
    *         [[NA]] cells
    */
   implicit def arbMeaningfulSeries[K: Arbitrary: Order: ClassTag, V: Arbitrary: ClassTag]: Arbitrary[MeaningfulSeries[K, V]] =
-    Arbitrary(SeriesGenerators.genSeries(arbitrary[K], arbitrary[V], (7, 3, 0)).map(MeaningfulSeries(_)))
+    Arbitrary(SeriesGenerators.genSeries(arbitrary[K], arbitrary[V], (7, 3, 0)).suchThat(!_.isEmpty).map(MeaningfulSeries(_)))
 
   /** Generate a [[framian.Series]] whose keys and values come from the given generators. The cell
     * types will be split among [[Value]], [[NA]] and [[NM]] according to the provided weighted

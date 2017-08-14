@@ -122,7 +122,7 @@ class SeriesSpec extends FramianSpec
 
     "use Semigroup.op to cogroup values together in merge" in {
       // Contrive a semigroup by adding all the numbers together of the group
-      implicit val intSemigroup = Semigroup.additive[Int]
+      implicit val intSemigroup = AdditiveMonoid.additive[Int]
 
       forAll(SeriesGenerators.genSeries(arbitrary[Int], arbitrary[Int], (1, 0, 0))) { series =>
         val mergedSeries1 = series.merge(series)
@@ -432,7 +432,7 @@ class SeriesSpec extends FramianSpec
 
     "reduce in order" in {
       val a = Series("c" -> 2, "a" -> 1, "b" -> 3)
-      a.mapValues(_ :: Nil).reduce[List[Int]](reduce.MonoidReducer) should === (Value(List(2, 1, 3)))
+      a.mapValues(_ :: Nil).reduce[List[Int]](reduce.MonoidReducer[List[Int]]) should === (Value(List(2, 1, 3)))
     }
   }
 
@@ -455,7 +455,7 @@ class SeriesSpec extends FramianSpec
         "b" -> List(3),
         "c" -> List(1, 6, 5)
       )
-      a.mapValues(_ :: Nil).reduceByKey(reduce.MonoidReducer) should === (expected)
+      a.mapValues(_ :: Nil).reduceByKey(reduce.MonoidReducer[List[Int]]) should === (expected)
     }
   }
 

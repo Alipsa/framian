@@ -1,17 +1,16 @@
 package framian
 package reduce
 
-import scala.reflect.ClassTag
+import algebra.ring.{AdditiveMonoid, MultiplicativeMonoid}
 
+import scala.reflect.ClassTag
 import spire.math.Rational
 import spire.std.double._
 import spire.std.bigDecimal._
 import spire.std.int._
 import spire.std.string._
 import spire.syntax.std.seq._
-
-import org.scalacheck.{ Arbitrary, Gen, Prop }
-
+import org.scalacheck.{Arbitrary, Gen, Prop}
 import org.scalatest.prop.Checkers
 
 class ReducerSpec extends FramianSpec
@@ -442,19 +441,19 @@ class ReducerSpec extends FramianSpec
             if (ms.series.values.isEmpty) {
               // For empty m.series, ensure the reducers return the identity value
               {
-                implicit val m = Monoid.additive[Int]
-                Prop(ms.series.reduce(MonoidReducer[Int]) == Value(m.id))
+                implicit val m = AdditiveMonoid.additive[Int]
+                Prop(ms.series.reduce(MonoidReducer[Int]) == Value(m.empty))
               } && {
-                implicit val m = Monoid.multiplicative[Int]
-                Prop(ms.series.reduce(MonoidReducer[Int]) == Value(m.id))
+                implicit val m = MultiplicativeMonoid.multiplicative[Int]
+                Prop(ms.series.reduce(MonoidReducer[Int]) == Value(m.empty))
               }
             } else {
               // For non-empty m.series, ensure the reducers return the correct value
               {
-                implicit val m = Monoid.additive[Int]
+                implicit val m = AdditiveMonoid.additive[Int]
                 Prop(ms.series.reduce(MonoidReducer[Int]) == Value(ms.series.values.sum))
               } && {
-                implicit val m = Monoid.multiplicative[Int]
+                implicit val m = MultiplicativeMonoid.multiplicative[Int]
                 Prop(ms.series.reduce(MonoidReducer[Int]) == Value(ms.series.values.product))
               }
             }
@@ -464,7 +463,7 @@ class ReducerSpec extends FramianSpec
     }
 
     "return NM if the series contains NM" in {
-      implicit val m = Monoid.additive[Int]
+      implicit val m = AdditiveMonoid.additive[Int]
       reducingMeaninglessSeriesMustEqNM(MonoidReducer[Int])
     }
   }
@@ -490,19 +489,19 @@ class ReducerSpec extends FramianSpec
             if (m.series.values.isEmpty) {
               // For empty m.series, ensure the reducers return NA
               {
-                implicit val sg = Semigroup.additive[Int]
+                implicit val sg: Semigroup[Int] = AdditiveMonoid.additive[Int]
                 Prop(m.series.reduce(SemigroupReducer[Int]) == NA)
               } && {
-                implicit val sg = Semigroup.multiplicative[Int]
+                implicit val sg:Semigroup[Int] = MultiplicativeMonoid.multiplicative[Int]
                 Prop(m.series.reduce(SemigroupReducer[Int]) == NA)
               }
             } else {
               // For non-empty m.series, ensure the reducers return the correct value
               {
-                implicit val sg = Semigroup.additive[Int]
+                implicit val sg: Semigroup[Int] = AdditiveMonoid.additive[Int]
                 Prop(m.series.reduce(SemigroupReducer[Int]) == Value(m.series.values.sum))
               } && {
-                implicit val sg = Semigroup.multiplicative[Int]
+                implicit val sg:Semigroup[Int] = MultiplicativeMonoid.multiplicative[Int]
                 Prop(m.series.reduce(SemigroupReducer[Int]) == Value(m.series.values.product))
               }
             }
@@ -511,7 +510,7 @@ class ReducerSpec extends FramianSpec
       }
     }
 
-    implicit val m = Semigroup.additive[Int]
+    implicit val m:Semigroup[Int] = AdditiveMonoid.additive[Int]
     "return NM if the series contains NM" in reducingMeaninglessSeriesMustEqNM(SemigroupReducer[Int])
   }
 

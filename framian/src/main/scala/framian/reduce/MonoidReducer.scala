@@ -30,7 +30,7 @@ import spire.syntax.monoid._
 class MonoidReducer[A: Monoid] extends Reducer[A, A] {
 
   def reduce(column: Column[A], indices: Array[Int], start: Int, end: Int): Cell[A] = {
-    var sum = Monoid[A].id
+    var sum = Monoid[A].empty
     val success = column.foreach(start, end, indices(_)) { (_, a) =>
       sum = sum |+| a
     }

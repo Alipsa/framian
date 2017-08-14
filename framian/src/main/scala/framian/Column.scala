@@ -287,8 +287,8 @@ object Column {
 
   implicit def columnMonoid[A]: Monoid[Column[A]] =
     new Monoid[Column[A]] {
-      def id: Column[A] = empty[A]()
-      def op(lhs: Column[A], rhs: Column[A]): Column[A] =
+      def empty: Column[A] = Column.empty[A]()
+      def combine(lhs: Column[A], rhs: Column[A]): Column[A] =
         lhs orElse rhs
     }
 }

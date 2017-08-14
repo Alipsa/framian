@@ -47,9 +47,9 @@ trait UntypedColumn extends ColumnLike[UntypedColumn] {
 
 object UntypedColumn {
   implicit object monoid extends Monoid[UntypedColumn] {
-    def id: UntypedColumn = empty
-    def op(lhs: UntypedColumn, rhs: UntypedColumn): UntypedColumn =
-      lhs orElse rhs
+    def empty: UntypedColumn = UntypedColumn.empty
+    def combine(x: UntypedColumn, y: UntypedColumn): UntypedColumn =
+      x orElse y
   }
 
   final def empty: UntypedColumn = EmptyUntypedColumn

@@ -70,12 +70,12 @@ class ColumnSpec extends FramianSpec
 
   "Monoid[Column[A]]" should {
     "left identity" in forAll { (col0: Column[Int], indices: List[Int]) =>
-      val col1 = Monoid[Column[Int]].id orElse col0
+      val col1 = Monoid[Column[Int]].empty orElse col0
       indices.map(col0(_)) should === (indices.map(col1(_)))
     }
 
     "right identity" in forAll { (col0: Column[Int], indices: List[Int]) =>
-      val col1 = col0 orElse Monoid[Column[Int]].id
+      val col1 = col0 orElse Monoid[Column[Int]].empty
       indices.map(col0(_)) should === (indices.map(col1(_)))
     }
 
